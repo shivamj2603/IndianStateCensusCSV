@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import java.util.Iterator;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
+import com.opencsv.exceptions.CsvRuntimeException;
 
 public class CensusAnalyser {
 	public int loadCSVData(String csvFile) throws CensusAnalyserException, IOException {
@@ -25,7 +26,7 @@ public class CensusAnalyser {
 		catch (IOException exception) {
 			throw new CensusAnalyserException(exception.getMessage(), CensusAnalyserException.ExceptionType.INCORRECT_FILE);
 		}
-		catch (IllegalStateException exception) {
+		catch (RuntimeException exception) {
 			throw new CensusAnalyserException(exception.getMessage(), CensusAnalyserException.ExceptionType.UNABLE_TO_PARSE);
 		}
 	}
