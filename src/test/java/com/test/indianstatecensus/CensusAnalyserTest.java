@@ -7,6 +7,7 @@ import com.indianstatecensus.CensusAnalyserException;
 
 public class CensusAnalyserTest {
 	private static final String STATECENSUS_CSVFILE = "C:\\Users\\shiva\\eclipse-workspace\\Census\\IndiaStateCensusData.csv";
+	private static final String WRONG_FILE = "C:\\Users\\shiva\\eclipse-workspace\\Census\\IndianStateCensus.csv";
 	@Test
 	public void givenCSVFile_ifMatchesTotalNumberOfRecords_ShouldReturnTrue() throws IOException {
 		CensusAnalyser analyser = new CensusAnalyser();
@@ -17,5 +18,16 @@ public class CensusAnalyserTest {
 			exception.printStackTrace();
 		}
 		assertEquals(29, count);
+	}
+	@Test
+	public void givenCSVFile_whenWrongFile_ShouldThrowError() throws IOException {
+		CensusAnalyser analyser = new CensusAnalyser();
+		int count = 0;
+		try {
+			count = analyser.loadCSVData(WRONG_FILE);
+		} catch (CensusAnalyserException exception) {
+			System.out.println("No such file found");
+			assertEquals(CensusAnalyserException.ExceptionType.INCORRECT_FILE, exception.type);
+		}
 	}
 }
