@@ -54,4 +54,15 @@ public class CensusAnalyserTest {
 			assertEquals(CensusAnalyserException.ExceptionType.UNABLE_TO_PARSE, exception.type);
 		}
 	}
+	@Test
+	public void givenCSVFile_whenFileCorrect_butHeaderIncorrect_shouldThrowError() throws IOException {
+		CensusAnalyser analyser = new CensusAnalyser();
+		int count = 0;
+		try {
+			count = analyser.loadCSVData(CSVFILE);
+		} catch (CensusAnalyserException exception) {
+			System.out.println("Incorrect file");
+			assertEquals(CensusAnalyserException.ExceptionType.UNABLE_TO_PARSE, exception.type);
+		}
+	}
 }
