@@ -12,11 +12,7 @@ public class CensusAnalyser {
 	public int loadCSVData(String csvFile) throws CensusAnalyserException, IOException {
 		try(Reader reader = Files.newBufferedReader(Paths.get(csvFile));) {
 			Iterator<CSVStateCensus> censusIterator = this.getCSVFileIterator(reader, CSVStateCensus.class);
-			int countOfRecord = 0;
-			while (censusIterator.hasNext()) {
-				countOfRecord++;
-				CSVStateCensus censusData = censusIterator.next();
-			}
+			int countOfRecord = this.getCount(censusIterator);
 			return countOfRecord;
 		} 
 		catch (IOException exception) {
@@ -26,11 +22,7 @@ public class CensusAnalyser {
 	public int loadStateCodeData(String csvFile) throws CensusAnalyserException, IOException {
 		try(Reader reader = Files.newBufferedReader(Paths.get(csvFile));) {
 			Iterator<StateCodeCSV> censusIterator = this.getCSVFileIterator(reader, StateCodeCSV.class);
-			int countOfRecord = 0;
-			while (censusIterator.hasNext()) {
-				countOfRecord++;
-				StateCodeCSV censusData = censusIterator.next();
-			}
+			int countOfRecord = this.getCount(censusIterator);
 			return countOfRecord;
 		} 
 		catch (IOException exception) {
@@ -48,5 +40,13 @@ public class CensusAnalyser {
 		catch (RuntimeException exception) {
 			throw new CensusAnalyserException(exception.getMessage(), CensusAnalyserException.ExceptionType.UNABLE_TO_PARSE);
 		}
+	}
+	private <E> int getCount(Iterator<E> iterator) {
+		int countOfRecord = 0;
+		while (iterator.hasNext()) {
+			countOfRecord++;
+			E censusData = iterator.next();
+		}
+		return countOfRecord;
 	}
 }
