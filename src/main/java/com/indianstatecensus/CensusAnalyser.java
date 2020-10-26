@@ -6,6 +6,11 @@ import java.nio.file.Paths;
 import java.util.Iterator;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
+
+import CSVBuilder.CSVBuilderException;
+import CSVBuilder.CSVBuilderFactory;
+import CSVBuilder.ICSVBuilder;
+
 import java.util.stream.StreamSupport;
 
 public class CensusAnalyser {

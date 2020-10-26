@@ -1,12 +1,13 @@
 package com.indianstatecensus;
 
-public class CensusAnalyserException extends Exception {
+public class CensusAnalyserException extends Exception{
 	public enum ExceptionType {
-		UNABLE_TO_PARSE, INCORRECT_FILE
+		NO_FILE, INCORRECT_FILE, UNABLE_TO_PARSE
 	}
 	public ExceptionType type;
 	public CensusAnalyserException(String message, ExceptionType type) {
 		super(message);
 		this.type = type;
 	}
+
 }
