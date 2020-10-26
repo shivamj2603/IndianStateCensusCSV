@@ -2,8 +2,11 @@ package com.test.indianstatecensus;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
+import com.google.gson.Gson;
+import com.indianstatecensus.CSVStateCensus;
 import com.indianstatecensus.CensusAnalyser;
 import com.indianstatecensus.CensusAnalyserException;
+import CSVBuilder.CSVBuilderException;
 
 public class CensusAnalyserTest {
 	private static final String STATECENSUS_CSVFILE = "C:\\Users\\shiva\\eclipse-workspace\\Census\\IndiaStateCensusData.csv";
@@ -120,5 +123,35 @@ public class CensusAnalyserTest {
 			System.out.println("Incorrect file");
 			assertEquals(CensusAnalyserException.ExceptionType.UNABLE_TO_PARSE, exception.type);
 		}
+	}
+	/**
+	 * TestCase 3
+	 * @throws IOException
+	 * @throws CensusAnalyserException
+	 * @throws CSVBuilderException
+	 */
+	@Test
+	public void givenIndianCensusData_WhenSortedOnState_ShouldReturnSortedResult()
+			throws IOException, CensusAnalyserException, CSVBuilderException {
+		CensusAnalyser analyser = new CensusAnalyser();
+		analyser.loadCSVData(STATECENSUS_CSVFILE);
+		String sortedCensusData = analyser.getStateWiseSortedCensusData();
+		CSVStateCensus[] censusCSV = new Gson().fromJson(sortedCensusData, CSVStateCensus[].class);
+		assertEquals("Andhra Pradesh", censusCSV[0].state);
+	}
+	/**
+	 * TestCase 3
+	 * @throws IOException
+	 * @throws CensusAnalyserException
+	 * @throws CSVBuilderException
+	 */
+	@Test
+	public void givenIndianCensusData_WhenSortedOnState_ShouldReturnSortedResultForLastState()
+			throws IOException, CensusAnalyserException, CSVBuilderException {
+		CensusAnalyser analyser = new CensusAnalyser();
+		analyser.loadCSVData(STATECENSUS_CSVFILE);
+		String sortedCensusData = analyser.getStateWiseSortedCensusData();
+		CSVStateCensus[] censusCSV = new Gson().fromJson(sortedCensusData, CSVStateCensus[].class);
+		assertEquals("West Bengal", censusCSV[censusCSV.length - 1].state);
 	}
 }
