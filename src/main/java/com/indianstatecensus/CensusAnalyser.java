@@ -3,23 +3,25 @@ import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Comparator;
 import java.util.Iterator;
+import com.google.gson.Gson;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
-
 import CSVBuilder.CSVBuilderException;
 import CSVBuilder.CSVBuilderFactory;
 import CSVBuilder.ICSVBuilder;
-
+import java.util.List;
 import java.util.stream.StreamSupport;
 
 public class CensusAnalyser {
+	List<CSVStateCensus> censusCSVList = null;
 	public int loadCSVData(String csvFile) throws CensusAnalyserException, IOException {
 		try {
 			Reader reader = Files.newBufferedReader(Paths.get(csvFile));
 			ICSVBuilder<CSVStateCensus> csvBuilder = CSVBuilderFactory.createCSVBuilder();
-			Iterator<CSVStateCensus> censusIterator = csvBuilder.getCSVFileIterator(reader,CSVStateCensus.class);
-            return this.getCount(censusIterator);
+			censusCSVList = csvBuilder.getCSVFileList(reader, CSVStateCensus.class);
+			return censusCSVList.size();
 		} 
 		catch(CSVBuilderException exception) {
 			throw new CensusAnalyserException(exception.getMessage(), CensusAnalyserException.ExceptionType.UNABLE_TO_PARSE);
@@ -32,8 +34,8 @@ public class CensusAnalyser {
 		try {
 			Reader reader = Files.newBufferedReader(Paths.get(csvFile));
 			ICSVBuilder<StateCodeCSV> csvBuilder = CSVBuilderFactory.createCSVBuilder();
-			Iterator<StateCodeCSV> censusIterator = csvBuilder.getCSVFileIterator(reader, StateCodeCSV.class);
-            return this.getCount(censusIterator);
+			List<StateCodeCSV> censusCSVList = csvBuilder.getCSVFileList(reader, StateCodeCSV.class);
+			return censusCSVList.size();
 		} 
 		catch(CSVBuilderException exception) {
 			throw new CensusAnalyserException(exception.getMessage(), CensusAnalyserException.ExceptionType.UNABLE_TO_PARSE);
@@ -41,10 +43,5 @@ public class CensusAnalyser {
 		catch (IOException exception) {
 			throw new CensusAnalyserException(exception.getMessage(), CensusAnalyserException.ExceptionType.INCORRECT_FILE);
 		}
-	}
-	private <E> int getCount(Iterator<E> iterator) {
-		Iterable<E> csvIterable = () -> iterator;
-		int countOfRecords = (int) StreamSupport.stream(csvIterable.spliterator(), false).count();
-		return countOfRecords;
 	}
 }
