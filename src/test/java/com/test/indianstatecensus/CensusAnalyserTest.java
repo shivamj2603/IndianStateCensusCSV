@@ -266,5 +266,4 @@ public class CensusAnalyserTest {
 		CSVStateCensus[] censusCSV = new Gson().fromJson(sortedCensusData, CSVStateCensus[].class);
 		assertEquals("Rajasthan", censusCSV[0].state);
 	}
-
 }
