@@ -98,4 +98,13 @@ public class CensusAnalyser {
 			}
 		}
 	}
+	public String getPopulationDensityWiseSortedCensusData() throws CensusAnalyserException {
+		if(censusCSVList == null || censusCSVList.size() == 0) {
+			throw new CensusAnalyserException("No Census Data", CensusAnalyserException.ExceptionType.NO_CENSUS_DATA);
+		}
+		Comparator<CSVStateCensus> censusComparator = Comparator.comparing(census -> census.densityPerSqKm);
+		this.sort(censusCSVList, censusComparator.reversed());
+		String sortedStateCensusJson = new Gson().toJson(censusCSVList);
+		return sortedStateCensusJson;
+	}		
 }
